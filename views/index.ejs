@@ -1,0 +1,67 @@
+<%- include('partials/header.ejs'); -%>
+
+    <div class="px-5 my-5 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-book mb-3" viewBox="0 0 16 16">
+            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+        <h1 class="display-5 fw-bold text-body-emphasis">Seconds Book Notes</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">Leave your notes on your favourite book! <strong>Please Create An account to get started</strong></p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <form action="/create-note" method="POST">
+                        <button type="button submit" class="btn btn-primary btn-lg px-4 gap-3">Create Note</button>
+                    </form>
+
+                    <form action="/create-account" method="POST">
+                        <button type="button submit" class="btn btn-success btn-lg px-4 gap-3">Create Account</button>
+                    </form>
+
+                    <form action="/delete-post" method="POST">
+                        <button type="button submit" class="btn btn-danger btn-lg px-4 gap-3">Delete Post</button>
+                    </form>
+
+                    <form action="/edit-post" method="POST">
+                        <button type="button submit" class="btn btn-secondary btn-lg px-4 gap-3">Edit Post</button>
+                    </form>
+                </div>
+            
+        </div>
+    </div>
+    <% if (posts.length == 0)  {%>
+        <div class = "container text-center">
+            <h5 class = "lead">Be the first to post!!</h5>
+        </div>
+    <% } else { %>
+        <% for(var i = 0; i <= posts.length-1; i++) { %>
+            <div class="container px-4 pb-5 mb-2">
+                <div class="row gx-5">
+                    <div class="col d-flex justify-content-center">
+                        <div class="p-3">
+                            <img src = <%= posts[i].imgpath%> />
+                        </div>
+                    </div>
+                <div class="col">
+                    <div class = "row gx-5">
+                        <div class="p-3 playwrite-ng-modern-title">
+                            <%= posts[i].title %>
+                        </div>
+                    </div>
+                    <div class = "row gx-5">
+                        <div class="p-3">
+                            <%= posts[i].content %>
+                        </div>
+                    </div>
+                    <div class = "row gx-5">
+                        <div class="p-3">
+                            By <%= posts[i].user_name %>
+                        </div>
+                        <div class="p-3">
+                            PostID <%= posts[i].id %>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+<%- include('partials/footer.ejs'); -%>

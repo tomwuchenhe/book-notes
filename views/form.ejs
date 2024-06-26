@@ -1,0 +1,25 @@
+<%- include('partials/header.ejs'); -%>
+
+
+
+<div class = "container text-center">
+        <% if (locals.success) { %>
+                <h5 style = "color: red;" id = "register"><%= success %></h5>
+        <% } %>
+        <form method = "POST" action = "/submit-notes" class = "pt-2 starting">
+
+            <input name="key" type="text" class="feedback-input" placeholder="key(isbn, id, etc..)" />
+            <input name="value" type="text" class="feedback-input" placeholder="value of chosen key" />
+            <input name="size" type="text" class="feedback-input" placeholder="size in S M L" />
+
+            <input name="username" type="text" class="feedback-input" placeholder="usename" />
+            <input name="title" type="text" class="feedback-input" placeholder="title" />
+            <textarea name="content" class="feedback-input" placeholder="content"></textarea>
+
+            <input type="submit" value="SUBMIT" />
+        </form>
+</div>
+
+
+
+<%- include('partials/footer.ejs'); -%>

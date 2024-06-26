@@ -1,0 +1,20 @@
+<%- include('partials/header.ejs'); -%>
+
+
+
+<div class = "container text-center">
+        <% if (locals.success == true || locals.success == false) { %>
+            <% if (!success) { %>
+                <h5 style = "color: red;" id = "register">Username has been taken</h5>
+            <% } %>
+        <% } %>
+        <form method = "POST" action = "/submit-registration" class = "pt-2 starting">
+            <input name="username" type="text" class="feedback-input" placeholder="usename" />
+            <input name="password" type="text" class="feedback-input" placeholder="password" />
+            <input type="submit" value="SUBMIT" />
+        </form>
+</div>
+
+
+
+<%- include('partials/footer.ejs'); -%>

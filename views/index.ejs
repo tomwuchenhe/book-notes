@@ -8,21 +8,12 @@
         <div class="col-lg-6 mx-auto">
           <p class="lead mb-4">Leave your notes on your favourite book! <strong>Please Create An account to get started</strong></p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <form action="/create-note" method="POST">
-                        <button type="button submit" class="btn btn-primary btn-lg px-4 gap-3">Create Note</button>
-                    </form>
+                    
+                    <a class="btn btn-green btn-lg btn-primary" href="/create-note" role="button">Create Note</a>
 
-                    <form action="/create-account" method="POST">
-                        <button type="button submit" class="btn btn-success btn-lg px-4 gap-3">Create Account</button>
-                    </form>
+                    <a class="btn btn-red btn-lg btn-danger" href="/delete-post" role="button">Delete Post</a>
 
-                    <form action="/delete-post" method="POST">
-                        <button type="button submit" class="btn btn-danger btn-lg px-4 gap-3">Delete Post</button>
-                    </form>
-
-                    <form action="/edit-post" method="POST">
-                        <button type="button submit" class="btn btn-secondary btn-lg px-4 gap-3">Edit Post</button>
-                    </form>
+                    <a class="btn btn-dark btn-lg btn-secondary" href="/edit-post" role="button">Edit Post</a>
                 </div>
             
         </div>

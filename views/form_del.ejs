@@ -6,10 +6,10 @@
     <% if (locals.success) { %>
         <h5 style = "color: red;" id = "register"><%= success %></h5>
     <% } %>
-        <form method = "POST" action = "/submit-delete-post" class = "pt-2 starting">
+        <form method = "POST" action = "/delete-post" class = "pt-2 starting">
             <input name="post_id" type="text" class="feedback-input" placeholder="id to be deleted" />
             <input name="username" type="text" class="feedback-input" placeholder="your username" />
-            <input name="password" type="text" class="feedback-input" placeholder="shhh..secret" />
+            <input name="password" type="password" class="feedback-input" placeholder="shhh..secret(password)" />
             <input type="submit" value="SUBMIT" />
         </form>
 </div>

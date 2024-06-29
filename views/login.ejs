@@ -1,0 +1,25 @@
+<%- include('partials/header.ejs'); -%>
+
+<div class = "container">
+<main class="form-signin w-100 m-auto">
+    <form id = "center" method = "POST" action = "/create-account">
+      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  
+      <div class="form-floating">
+        <input name = "username" class="form-control" id="floatingInput" placeholder="user_name">
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="form-floating mb-2">
+        <input type="password" name = "password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+      <div class = "mb-5">
+        <a href = "/register">Do not have an account? Register Now!!</a>
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+      <p class="mt-5 mb-3 text-body-secondary">©Chenheee 2024</p>
+    </form>
+</main>
+</div>
+
+<%- include('partials/footer.ejs'); -%>

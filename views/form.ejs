@@ -6,7 +6,7 @@
         <% if (locals.success) { %>
                 <h5 style = "color: red;" id = "register"><%= success %></h5>
         <% } %>
-        <form method = "POST" action = "/submit-notes" class = "pt-2 starting">
+        <form method = "POST" action = "/create-note" class = "pt-2 starting">
 
             <input name="key" type="text" class="feedback-input" placeholder="key(isbn, id, etc..)" />
             <input name="value" type="text" class="feedback-input" placeholder="value of chosen key" />

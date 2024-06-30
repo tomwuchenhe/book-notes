@@ -34,13 +34,6 @@ db.connect();
 
 async function createTables() {
     try {
-      await db.query(`
-        CREATE TABLE user_info (
-          id SERIAL PRIMARY KEY,
-          user_name VARCHAR(60) NOT NULL UNIQUE,
-          password VARCHAR(100) NOT NULL
-        );
-      `);
   
       await db.query(`
         CREATE TABLE user_record (

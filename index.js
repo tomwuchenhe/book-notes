@@ -44,12 +44,11 @@ async function createTables() {
     
       await db.query(`CREATE TABLE IF NOT EXISTS user_record (
         id SERIAL,
-        user_name VARCHAR(60) NOT NULL,
+        user_name VARCHAR(60) REFERENCES user_info(user_name),
         title VARCHAR(60) NOT NULL,
         content VARCHAR(200) NOT NULL,
         imgpath VARCHAR(100),
-        PRIMARY KEY (id, user_name),
-        FOREIGN KEY (user_name) REFERENCES user_info(user_name)
+        PRIMARY KEY (id, user_name)
       );`);
       console.log('Tables created successfully.');
     } catch (err) {

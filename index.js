@@ -217,14 +217,23 @@ app.get(
       scope: ["profile", "email"],
     })
   );
+
+app.get("/loading", (req, res) => {
+    if (req.isAuthenticated()) {
+      res.render("loading.ejs");
+    } else {
+      res.redirect("/");
+    }
+  });
   
-  app.get(
-    "/auth/google/booknote",
-    passport.authenticate("google", {
-      successRedirect: "/home",
-      failureRedirect: "/",
-    })
-  );
+  
+  app.get("/auth/google/booknote", passport.authenticate("google", {
+    failureRedirect: "/"
+  }), (req, res) => {
+    // Redirect to the loading page after successful authentication
+    res.redirect("/loading");
+  });
+  
 
 app.get("/create-note", (req, res) => {
   if (req.isAuthenticated()) {
@@ -282,22 +291,24 @@ app.post("/delete-post", async (req, res) => {
     console.log(`${req.user.email} is deleting ${req.body.post_id}`)
     await deleteRecord(req.body.post_id);
     res.redirect("/home");
-  }
-  bcrypt.compare(userpassword, password, async (err, valid) => {
-    if (err) {
-      console.error("Error comparing passwords:");
-      res.render("form_del.ejs", {
-        success: "Check you enter correctly formated password",
+  } else {
+    bcrypt.compare(userpassword, password, async (err, valid) => {
+        if (err) {
+          console.error("Error comparing passwords:");
+          res.render("form_del.ejs", {
+            success: "Check you enter correctly formated password",
+          });
+        } else {
+          if (valid) {
+            await deleteRecord(req.body.post_id);
+            res.redirect("/home");
+          } else {
+            res.render("form_del.ejs", { success: "Password Incorrect" });
+          }
+        }
       });
-    } else {
-      if (valid) {
-        await deleteRecord(req.body.post_id);
-        res.redirect("/home");
-      } else {
-        res.render("form_del.ejs", { success: "Password Incorrect" });
-      }
-    }
-  });
+  }
+  
 });
 
 app.get("/edit-post", (req, res) => {
@@ -323,22 +334,23 @@ app.post("/edit-post", async (req, res) => {
     console.log(`${req.user.email} is editing on ${req.body.post_id}`)
     await editDBrecord(req.body.post_id, message);
     res.redirect("/home");
-  }
-  bcrypt.compare(userpassword, password, async (err, valid) => {
-    if (err) {
-      console.error("Error comparing passwords:");
-      res.render("form_edit.ejs", {
-        success: "Check you enter correctly formated password",
+  } else {
+    bcrypt.compare(userpassword, password, async (err, valid) => {
+        if (err) {
+          console.error("Error comparing passwords:");
+          res.render("form_edit.ejs", {
+            success: "Check you enter correctly formated password",
+          });
+        } else {
+          if (valid) {
+            await editDBrecord(req.body.post_id, message);
+            res.redirect("/home");
+          } else {
+            res.render("form_edit.ejs", { success: "Password Incorrect" });
+          }
+        }
       });
-    } else {
-      if (valid) {
-        await editDBrecord(req.body.post_id, message);
-        res.redirect("/home");
-      } else {
-        res.render("form_edit.ejs", { success: "Password Incorrect" });
-      }
-    }
-  });
+  }
 });
 
 passport.use(

@@ -34,16 +34,21 @@ db.connect();
 
 async function createTables() {
     try {
-  
       await db.query(`
-        CREATE TABLE user_record (
+            CREATE TABLE IF NOT EXISTS user_info (
+              id SERIAL PRIMARY KEY,
+              user_name VARCHAR(60) NOT NULL,
+              password VARCHAR(100) NOT NULL
+            );
+          `);
+    
+      await db.query(`CREATE TABLE IF NOT EXISTS user_record (
           id SERIAL PRIMARY KEY,
           user_name VARCHAR(60) REFERENCES user_info(user_name),
           title VARCHAR(60) NOT NULL,
           content VARCHAR(200) NOT NULL,
-          imgpath VARCHAR(100),
-        );
-      `);
+          imgpath VARCHAR(100)
+        );`);
       console.log('Tables created successfully.');
     } catch (err) {
       console.error('Error creating tables:', err);

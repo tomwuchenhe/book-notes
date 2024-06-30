@@ -37,7 +37,7 @@ async function createTables() {
       await db.query(`
             CREATE TABLE IF NOT EXISTS user_info (
               id SERIAL PRIMARY KEY,
-              user_name VARCHAR(60) NOT NULL,
+              user_name VARCHAR(60) NOT NULL UNIQUE,
               password VARCHAR(100) NOT NULL
             );
           `);

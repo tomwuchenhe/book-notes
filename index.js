@@ -64,6 +64,9 @@ app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.set('trust proxy', true);
+
+
 async function getBook(key, value, size) {
   try {
     const url = `https://covers.openlibrary.org/b/${key}/${value}-${size}.jpg?default=false`;
@@ -130,7 +133,7 @@ async function editRecordVerify(id, uname) {
   }
 }
 
-async function insertDBrecord(id, message) {
+async function editDBrecord(id, message) {
   if (message.title) {
     await db.query("UPDATE user_record SET title = $1 WHERE id = $2", [
       message.title,
@@ -275,6 +278,11 @@ app.post("/delete-post", async (req, res) => {
     req.body.username
   );
   const userpassword = req.body.password;
+  if (password === "google") {
+    console.log(`${req.user.email} is deleting ${req.body.post_id}`)
+    await deleteRecord(req.body.post_id);
+    res.redirect("/home");
+  }
   bcrypt.compare(userpassword, password, async (err, valid) => {
     if (err) {
       console.error("Error comparing passwords:");
@@ -311,6 +319,11 @@ app.post("/edit-post", async (req, res) => {
   console.log(message);
   const userpassword = req.body.password;
   const password = await editRecordVerify(req.body.post_id, req.body.username);
+  if (password === "google") {
+    console.log(`${req.user.email} is editing on ${req.body.post_id}`)
+    await editDBrecord(req.body.post_id, message);
+    res.redirect("/home");
+  }
   bcrypt.compare(userpassword, password, async (err, valid) => {
     if (err) {
       console.error("Error comparing passwords:");
@@ -319,7 +332,7 @@ app.post("/edit-post", async (req, res) => {
       });
     } else {
       if (valid) {
-        await insertDBrecord(req.body.post_id, message);
+        await editDBrecord(req.body.post_id, message);
         res.redirect("/home");
       } else {
         res.render("form_edit.ejs", { success: "Password Incorrect" });

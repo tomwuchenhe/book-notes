@@ -32,7 +32,7 @@ const db = new pg.Client({
 
 db.connect();
 
-const createTables = async () => {
+async function createTables() {
     try {
       await db.query(`
         CREATE TABLE user_info (
@@ -55,9 +55,9 @@ const createTables = async () => {
     } catch (err) {
       console.error('Error creating tables:', err);
     }
-  };
-  
-createTables();
+}
+
+await createTables();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));

@@ -41,7 +41,7 @@ async function createTables() {
               password VARCHAR(100) NOT NULL
             );
           `);
-    
+        console.log(1)
       await db.query(`CREATE TABLE IF NOT EXISTS user_record (
         id SERIAL,
         user_name VARCHAR(60) REFERENCES user_info(user_name),

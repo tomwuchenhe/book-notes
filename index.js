@@ -50,8 +50,7 @@ async function createTables() {
         imgpath VARCHAR(100),
         PRIMARY KEY (id, user_name),
         FOREIGN KEY (user_name) REFERENCES user_info(user_name)
-      );
-        );`);
+      );`);
       console.log('Tables created successfully.');
     } catch (err) {
       console.error('Error creating tables:', err);

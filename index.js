@@ -216,7 +216,6 @@ app.get("/home", async (req, res) => {
     const response = await getGeo(req.ip)
     posts.city = response.city
     posts.country = response.country_emoji
-    posts.time = response.time_zone.current_time
     res.render("index.ejs", { posts: posts });
   } else {
     res.redirect("/");

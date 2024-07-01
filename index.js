@@ -148,14 +148,7 @@ async function editDBrecord(id, message) {
     }
   }
 
-async function getGeo(ip) {
-    try {
-        response = await axios.get(`https://api.ipgeolocation.io/ipgeo?ip=${ip}&apiKey=${process.env.API_KEY}`)
-        return response
-    } catch (err) {
-        console.log(err)
-    }
-}
+
 
 
 app.get("/register", (req, res) => {
@@ -213,9 +206,6 @@ app.get("/home", async (req, res) => {
     console.log("This is the user IP:", req.ip)
   if (req.isAuthenticated()) {
     const posts = await getAllRecord();
-    const response = await getGeo(req.ip)
-    posts.city = response.city
-    posts.country = response.country_emoji
     res.render("index.ejs", { posts: posts });
   } else {
     res.redirect("/");

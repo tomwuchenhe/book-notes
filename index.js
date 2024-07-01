@@ -41,7 +41,6 @@ async function createTables() {
               password VARCHAR(100) NOT NULL
             );
           `);
-        console.log(1)
       await db.query(`CREATE TABLE IF NOT EXISTS user_record (
         id SERIAL,
         user_name VARCHAR(60) REFERENCES user_info(user_name),
@@ -134,22 +133,22 @@ async function editRecordVerify(id, uname) {
 }
 
 async function editDBrecord(id, message) {
-  if (message.title) {
-    await db.query("UPDATE user_record SET title = $1 WHERE id = $2", [
-      message.title,
-      id,
-    ]);
-    if (message.content) {
-      await db.query("UPDATE user_record SET content = $1 WHERE id = $2", [
-        message.content,
-        id,
-      ]);
-      return true;
-    } else {
-      return true;
+    try {
+        for (const [key, value] of Object.entries(message)) {
+            console.log(`${key}: ${value}`);
+            await db.query(`UPDATE user_record SET ${key} = $1 WHERE id = $2`, [
+                value,
+                id,
+            ]);
+        }
+        return true
+    } catch (err) {
+        console.log(err)
+        return false
     }
   }
-}
+
+
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
@@ -246,7 +245,6 @@ app.get("/create-note", (req, res) => {
 app.post("/create-note", async (req, res) => {
   let response;
   const imgPath = await getBook(req.body.key, req.body.value, req.body.size);
-  console.log(imgPath);
   if (imgPath != false) {
     response = await insertRecord(
       imgPath,

@@ -60,3 +60,10 @@
 #center {
   margin-top: 25vh
 }
+
+.form-group {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  display: flex;
+  gap: 6%
+}

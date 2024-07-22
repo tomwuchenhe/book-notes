@@ -9,6 +9,9 @@ import GoogleStrategy from "passport-google-oauth2";
 import session from "express-session";
 import env from "dotenv";
 
+//not redirecting authenticated user to desired page, adding is authenticating on / route
+//more clarification on create note(Button can be used) button (isbn) button(id)
+//delete and edited postID, can be designed as a drop down postID 1 2 3
 const app = express();
 const port = 3000;
 const saltRounds = 10;
@@ -65,7 +68,33 @@ app.use(passport.session());
 
 app.set('trust proxy', true);
 
-
+function getUsername(email) {
+    if (typeof email !== 'string') {
+      throw new Error('Input must be a string');
+    }
+    
+    const [username] = email.split('@');
+    return username;
+  }
+  
+function modifyName(posts){
+    let newName = []
+    let new_obj = []
+    posts.forEach((post) => {
+        newName.push(getUsername(post.user_name))
+    })
+    for (let i = 0; i < posts.length; i++) {
+        new_obj.push({
+            id: posts[i].id,
+            user_name: newName[i],
+            title: posts[i].title,
+            content: posts[i].content,
+            imgpath: posts[i].imgpath
+        })
+    }
+    return new_obj
+}
+  
 async function getBook(key, value, size) {
   try {
     const url = `https://covers.openlibrary.org/b/${key}/${value}-${size}.jpg?default=false`;
@@ -190,7 +219,11 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/home")
+    } else {
   res.render("login.ejs");
+    }
 });
 
 app.post(
@@ -205,8 +238,8 @@ app.get("/home", async (req, res) => {
     console.log("This is the user requesting information for cookies and session:", req.user)
     console.log("This is the user IP:", req.ip)
   if (req.isAuthenticated()) {
-    const posts = await getAllRecord();
-    res.render("index.ejs", { posts: posts });
+    let posts = await getAllRecord();
+    res.render("index.ejs", { posts: modifyName(posts) });
   } else {
     res.redirect("/");
   }
@@ -219,21 +252,15 @@ app.get(
     })
   );
 
-app.get("/loading", (req, res) => {
-    if (req.isAuthenticated()) {
-      res.render("loading.ejs");
-    } else {
-      res.redirect("/");
-    }
-  });
   
   
-  app.get("/auth/google/booknote", passport.authenticate("google", {
-    failureRedirect: "/"
-  }), (req, res) => {
-    // Redirect to the loading page after successful authentication
-    res.redirect("/loading");
-  });
+  app.get(
+    "/auth/google/booknote",
+    passport.authenticate("google", {
+      successRedirect: "/home",
+      failureRedirect: "/",
+    })
+  );
   
 
 app.get("/create-note", (req, res) => {
@@ -247,35 +274,47 @@ app.get("/create-note", (req, res) => {
 app.post("/create-note", async (req, res) => {
   let response;
   const imgPath = await getBook(req.body.key, req.body.value, req.body.size);
+  console.log(req.body)
   if (imgPath != false) {
     response = await insertRecord(
       imgPath,
-      req.body.username,
+      req.user.user_name,
       req.body.title,
       req.body.content
     );
   } else {
     response = await insertRecord(
       "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png",
-      req.body.username,
+      req.user.user_name,
       req.body.title,
       req.body.content
     );
   }
-  console.log(response);
+  //console.log(response);
   if (response) {
     res.redirect("/home");
     //consider delete this as user need to be verified before going here
   } else {
     res.render("form.ejs", {
-      success: "Error inserting, go create account first",
+      success: "Database error",
     });
   }
 });
 
 app.get("/delete-post", (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("form_del.ejs");
+    console.log(req.profile)
+    if (req.user.password === "google") {
+        res.render("form_del.ejs", {
+            auth: "google",
+            user: getUsername(req.user.user_name)
+        })
+    } else {
+        res.render("form_del.ejs", {
+            auth: "regular",
+            user: req.user.user_name
+        });
+    }
   } else {
     res.redirect("/");
   }
@@ -284,7 +323,7 @@ app.get("/delete-post", (req, res) => {
 app.post("/delete-post", async (req, res) => {
   const password = await deleteRecordVerify(
     req.body.post_id,
-    req.body.username
+    req.user.user_name
   );
   const userpassword = req.body.password;
   if (password === "google") {
@@ -295,15 +334,20 @@ app.post("/delete-post", async (req, res) => {
     bcrypt.compare(userpassword, password, async (err, valid) => {
         if (err) {
           console.error("Error comparing passwords:");
-          res.render("form_del.ejs", {
-            success: "Check you enter correctly formated password",
-          });
+            res.render("form_del.ejs", {
+                auth: req.user.password === "google" ? "google" : "regular",
+                success: "id you enter does not exist or other people post",
+                user: getUsername(req.user.user_name)
+            });
         } else {
           if (valid) {
             await deleteRecord(req.body.post_id);
             res.redirect("/home");
           } else {
-            res.render("form_del.ejs", { success: "Password Incorrect" });
+            res.render("form_del.ejs", { 
+                auth: req.user.password === "google" ? "google" : "regular",
+                success: "Password Incorrect",
+                user: getUsername(req.user.user_name) });
           }
         }
       });
@@ -313,7 +357,10 @@ app.post("/delete-post", async (req, res) => {
 
 app.get("/edit-post", (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("form_edit.ejs");
+    res.render("form_edit.ejs", {
+        auth: req.user.password === "google" ? "google" : "regular",
+        user: getUsername(req.user.user_name)
+    });
   } else {
     res.redirect("/");
   }
@@ -321,6 +368,7 @@ app.get("/edit-post", (req, res) => {
 
 app.post("/edit-post", async (req, res) => {
   let message = {};
+  let userpassword
   if (req.body.title) {
     message.title = req.body.title;
   }
@@ -328,8 +376,10 @@ app.post("/edit-post", async (req, res) => {
     message.content = req.body.content;
   }
   console.log(message);
-  const userpassword = req.body.password;
-  const password = await editRecordVerify(req.body.post_id, req.body.username);
+  if (req.user.password !== "google") {
+    userpassword = req.body.password;
+  }
+  const password = await editRecordVerify(req.body.post_id, req.user.user_name);
   if (password === "google") {
     console.log(`${req.user.email} is editing on ${req.body.post_id}`)
     await editDBrecord(req.body.post_id, message);
@@ -339,14 +389,19 @@ app.post("/edit-post", async (req, res) => {
         if (err) {
           console.error("Error comparing passwords:");
           res.render("form_edit.ejs", {
-            success: "Check you enter correctly formated password",
+            auth: req.user.password === "google" ? "google" : "regular",
+            user: getUsername(req.user.user_name),
+            success: "id not found or other people post",
           });
         } else {
           if (valid) {
             await editDBrecord(req.body.post_id, message);
             res.redirect("/home");
           } else {
-            res.render("form_edit.ejs", { success: "Password Incorrect" });
+            res.render("form_edit.ejs", { success: "Password Incorrect",
+                auth: req.user.password === "google" ? "google" : "regular",
+            user: getUsername(req.user.user_name)
+             });
           }
         }
       });
@@ -391,7 +446,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://book-notes-na99.onrender.com/auth/google/booknote",
+      callbackURL: "http://localhost:3000/auth/google/booknote",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {

@@ -3,21 +3,60 @@
 
 
 <div class = "container text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis mt-5">Create A Note!</h1>
         <% if (locals.success) { %>
                 <h5 style = "color: red;" id = "register"><%= success %></h5>
         <% } %>
-        <form method = "POST" action = "/create-note" class = "pt-2 starting">
+        <form method="POST" action="/create-note" class="pt-2 starting">
+                <div class="form-group">
+                        <label for="size">Choose identifier:</label>
+                        <div>
+                                <input type="radio" id="isbn" name="key" value="isbn" required>
+                                <label for="isbn">ISBN</label>
+                        </div>
+                        <div>
+                                <input type="radio" id="id" name="key" value="id" required>
+                                <label for="id">ID</label>
+                        </div>
 
-            <input name="key" type="text" class="feedback-input" placeholder="key(isbn, id, etc..)" />
-            <input name="value" type="text" class="feedback-input" placeholder="value of chosen key" />
-            <input name="size" type="text" class="feedback-input" placeholder="size in S M L" />
+                </div>
+                
 
-            <input name="username" type="text" class="feedback-input" placeholder="usename" />
-            <input name="title" type="text" class="feedback-input" placeholder="title" />
-            <textarea name="content" class="feedback-input" placeholder="content"></textarea>
+                    <input name="value" type="text" class="feedback-input" placeholder="Value of chosen key" required />
 
-            <input type="submit" value="SUBMIT" />
-        </form>
+            
+                <div class="form-group">
+                    <label for="size">Choose size:</label>
+                        <div>
+                                <input type="radio" id="sizeS" name="size" value="S" required>
+                                <label for="sizeS">S</label>    
+                        </div>
+
+                        <div>
+                                <input type="radio" id="sizeM" name="size" value="M" required>
+                                <label for="sizeM">M</label>
+                        </div>
+                        <div>
+                                <input type="radio" id="sizeL" name="size" value="L" required>
+                                <label for="sizeL">L</label>
+                        </div>
+                </div>
+            
+
+                
+
+                    <input name="title" type="text" class="feedback-input" placeholder="Title" required />
+
+            
+
+                    <textarea name="content" class="feedback-input" placeholder="Content" required></textarea>
+
+            
+
+                    <input type="submit" value="SUBMIT" />
+
+            </form>
+            
 </div>
 
 

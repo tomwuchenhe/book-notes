@@ -3,7 +3,10 @@
 <div class = "container">
 <main class="form-signin w-100 m-auto">
     <form id = "center" method = "POST" action = "/register">
-      <h1 class="h3 mb-3 fw-normal text-center">Register as a new User!</h1>
+      <% if (locals.warning) { %>
+        <div class="alert alert-danger"><%= warning %></div>
+      <% } %>
+      <h1 class="h3 mb-3 fw-normal">Register as a new User!</h1>
   
       <div class="form-floating">
         <input name = "username" class="form-control" id="floatingInput" placeholder="user_name">

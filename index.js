@@ -195,7 +195,7 @@ app.post("/register", async (req, res) => {
     );
 
     if (checkResult.rows.length > 0) {
-      req.redirect("/login");
+      res.render("register.ejs", {warning: "User already exists"});
     } else {
       bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {

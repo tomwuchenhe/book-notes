@@ -222,17 +222,28 @@ app.get("/", (req, res) => {
     if (req.isAuthenticated()) {
         res.redirect("/home")
     } else {
-  res.render("login.ejs");
+    res.render("login.ejs");
     }
 });
 
-app.post(
-  "/create-account",
-  passport.authenticate("local", {
-    successRedirect: "/home",
-    failureRedirect: "/",
-  })
-);
+app.post("/create-account", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err); // Handle error
+    }
+    if (!user) {
+      // If user is not found or password is incorrect
+      return res.render("login.ejs", { message: info.message || "Login failed" });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err); // Handle error
+      }
+      return res.redirect("/home");
+    });
+  })(req, res, next);
+});
+
 
 app.get("/home", async (req, res) => {
     console.log("This is the user requesting information for cookies and session:", req.user)
@@ -427,12 +438,12 @@ passport.use(
             if (valid) {
               return cb(null, user);
             } else {
-              return cb(null, false);
+              return cb(null, false, { message: 'Wrong password' });
             }
           }
         });
       } else {
-        return cb("User not found");
+        return cb(null, false, { message: 'User Not found' });
       }
     } catch (err) {
       console.log(err);

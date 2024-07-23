@@ -25,28 +25,28 @@
     <% } else { %>
         <% for(var i = 0; i <= posts.length-1; i++) { %>
             <div class="container px-4 pb-5 mb-2">
-                <div class="row gx-5">
+                <div class="row gx-5 identifier">
                     <div class="col d-flex justify-content-center">
-                        <div class="p-3">
+                        <div class="p-4">
                             <img src = <%= posts[i].imgpath%> />
                         </div>
                     </div>
                 <div class="col">
-                    <div class = "row gx-5">
-                        <div class="p-3 playwrite-ng-modern-title">
+                    <div class = "gx-5">
+                        <div class="p-4 playwrite-ng-modern-title">
                             <%= posts[i].title %>
                         </div>
                     </div>
-                    <div class = "row gx-5">
-                        <div class="p-3">
+                    <div class = "gx-5">
+                        <div class="p-4">
                             <%= posts[i].content %>
                         </div>
                     </div>
-                    <div class = "row gx-5">
-                        <div class="p-3">
+                    <div class = "gx-5">
+                        <div class="p-4">
                             By <%= posts[i].user_name %>
                         </div>
-                        <div class="p-3">
+                        <div class="p-4">
                             PostID <%= posts[i].id %>
                         </div>
                     </div>

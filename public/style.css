@@ -67,3 +67,9 @@
   display: flex;
   gap: 6%
 }
+
+@media (max-width: 530px) {
+  .identifier {
+    flex-direction: column;
+  }
+}

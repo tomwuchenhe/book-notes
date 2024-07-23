@@ -5,11 +5,11 @@
 <div class = "container text-center">
     <h1 class="display-5 fw-bold text-body-emphasis mt-5">Edit A Note</h1>
     <% if (locals.success) { %>
-        <h5 style = "color: red;" id = "register"><%= success %></h5>
+        <h5 class="alert alert-danger" id = "register"><%= success %></h5>
     <% } if (locals.auth === "google") { %>
         <p class="lead mt-5">Welcome to edit page, google user <%= user %></p>
         <form method = "POST" action = "/edit-post" class = "pt-2 starting">
-            <input name="post_id" type="text" class="feedback-input" placeholder="id to be edited" />
+            <input name="post_id" type="text" class="feedback-input" placeholder="id to be edited" required/>
             <input name="title" type="text" class="feedback-input" placeholder="title(optional)" />
             <input name="content" type="text" class="feedback-input" placeholder="content(optional)" />
             <input type="submit" value="SUBMIT" />
@@ -17,8 +17,8 @@
     <% } else if (locals.auth === "regular") { %>
         <p class="lead mt-5">Welcome to edit page, regular user <%= user %></p>
         <form method = "POST" action = "/edit-post" class = "pt-2 starting">
-            <input name="post_id" type="text" class="feedback-input" placeholder="id to be edited" />
-            <input name="password" type="password" class="feedback-input" placeholder="shhh..secret(password)" />
+            <input name="post_id" type="text" class="feedback-input" placeholder="id to be edited" required/>
+            <input name="password" type="password" class="feedback-input" placeholder="shhh..secret(password)" required/>
             <input name="title" type="text" class="feedback-input" placeholder="title(optional)" />
             <input name="content" type="text" class="feedback-input" placeholder="content(optional)" />
             <input type="submit" value="SUBMIT" />

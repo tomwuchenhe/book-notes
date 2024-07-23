@@ -344,10 +344,10 @@ app.post("/delete-post", async (req, res) => {
   } else {
     bcrypt.compare(userpassword, password, async (err, valid) => {
         if (err) {
-          console.error("Error comparing passwords:");
+          console.log("Error comparing passwords:");
             res.render("form_del.ejs", {
                 auth: req.user.password === "google" ? "google" : "regular",
-                success: "id you enter does not exist or other people post",
+                success: "id you enter does not exist or other people post or password wrong",
                 user: getUsername(req.user.user_name)
             });
         } else {
@@ -398,11 +398,11 @@ app.post("/edit-post", async (req, res) => {
   } else {
     bcrypt.compare(userpassword, password, async (err, valid) => {
         if (err) {
-          console.error("Error comparing passwords:");
+          console.log("Error comparing passwords:");
           res.render("form_edit.ejs", {
             auth: req.user.password === "google" ? "google" : "regular",
             user: getUsername(req.user.user_name),
-            success: "id not found or other people post",
+            success: "id not found or other people post or password wrong",
           });
         } else {
           if (valid) {

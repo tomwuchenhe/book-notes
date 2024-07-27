@@ -72,4 +72,46 @@
   .identifier {
     flex-direction: column;
   }
+  .padding-t{
+    padding-top: 48px;
+  }
+  .shrink {
+    width: 80%;
+  }
 }
+
+body {
+  background: linear-gradient(300deg, #7da8b7, #7782e9, #7ed0f3, #f98262);
+  background-size: 300% 300%;
+  animation: gradient-animation 10s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+img {
+  border-radius: 7%;
+}
+
+.custom-box {
+  box-shadow: 
+      rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+      rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+      rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+      rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  word-wrap: break-word; /* Ensure text wraps within the container */
+  white-space: normal; /* Ensure text wraps */
+}
+
+
+

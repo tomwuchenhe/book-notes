@@ -24,10 +24,10 @@
         </div>
     <% } else { %>
         <% for(var i = 0; i <= posts.length-1; i++) { %>
-            <div class="container px-4 pb-5 mb-2">
-                <div class="row gx-5 identifier">
-                    <div class="col d-flex justify-content-center">
-                        <div class="p-4">
+            <div class="container mb-5 custom-box shrink">
+                <div class="row gx-5 identifier mx-0">
+                    <div class="col d-flex justify-content-center padding-t">
+                        <div class="d-flex align-items-center">
                             <img src = <%= posts[i].imgpath%> />
                         </div>
                     </div>
@@ -42,12 +42,12 @@
                             <%= posts[i].content %>
                         </div>
                     </div>
-                    <div class = "gx-5">
-                        <div class="p-4">
+                    <div class = "gx-5 py-5">
+                        <div class="p-4 py-0">
                             By <%= posts[i].user_name %>
                         </div>
-                        <div class="p-4">
-                            PostID <%= posts[i].id %>
+                        <div class="p-4 py-0 mt-1">
+                            <strong>PostID <%= posts[i].id %></strong>
                         </div>
                     </div>
                 </div>

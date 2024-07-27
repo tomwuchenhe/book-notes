@@ -10,7 +10,7 @@
         <p class="lead mt-5">Welcome to edit page, google user <%= user %></p>
         <form method = "POST" action = "/edit-post" class = "pt-2 starting">
             <input name="post_id" type="text" class="feedback-input" placeholder="id to be edited" required/>
-            <input name="title" type="text" class="feedback-input" placeholder="title(optional)" />
+            <input name="title" type="text" class="feedback-input" placeholder="title(optional)" maxlength="70"/>
             <input name="content" type="text" class="feedback-input" placeholder="content(optional)" />
             <input type="submit" value="SUBMIT" />
         </form>

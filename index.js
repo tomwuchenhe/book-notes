@@ -457,7 +457,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://book-notes-na99.onrender.com/auth/google/booknote",
+      //local dev use http://localhost:3000/auth/google/booknote
+      callbackURL: "http://localhost:3000/auth/google/booknote" ,
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
